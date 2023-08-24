@@ -14,3 +14,8 @@
 .str-chat * {
   font-family: inherit !important;
 }
+
+/* Search box height glitch fix */
+.str-chat__channel-search.str-chat__channel-search--with-results.str-chat__channel-search--inline {
+  height: fit-content;
+}
