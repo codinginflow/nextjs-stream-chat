@@ -1,3 +1,4 @@
+import LoadingButton from "@/components/LoadingButton";
 import { UserResource } from "@clerk/types";
 import { ArrowLeft } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -23,6 +24,13 @@ export default function UsersMenu({
 
   const [users, setUsers] = useState<(UserResponse & { image?: string })[]>();
 
+  const [moreUsersLoading, setMoreUsersLoading] = useState(false);
+
+  const [endOfPaginationReached, setEndOfPaginationReached] =
+    useState<boolean>();
+
+  const pageSize = 10;
+
   useEffect(() => {
     async function loadInitialUsers() {
       // await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -32,9 +40,12 @@ export default function UsersMenu({
           {
             id: { $ne: loggedInUser.id },
           },
-          { id: 1 }
+          { id: 1 },
+          { limit: pageSize + 1 }
         );
-        setUsers(response.users);
+
+        setUsers(response.users.slice(0, pageSize));
+        setEndOfPaginationReached(response.users.length <= pageSize);
       } catch (error) {
         console.error(error);
         alert("Error loading users");
@@ -42,6 +53,33 @@ export default function UsersMenu({
     }
     loadInitialUsers();
   }, [client, loggedInUser.id]);
+
+  async function loadMoreUsers() {
+    setMoreUsersLoading(true);
+
+    // await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    try {
+      const lastUserId = users?.[users.length - 1].id;
+      if (!lastUserId) return;
+
+      const response = await client.queryUsers(
+        {
+          $and: [{ id: { $ne: loggedInUser.id } }, { id: { $gt: lastUserId } }],
+        },
+        { id: 1 },
+        { limit: pageSize + 1 }
+      );
+
+      setUsers([...users, ...response.users.slice(0, pageSize)]);
+      setEndOfPaginationReached(response.users.length <= pageSize);
+    } catch (error) {
+      console.error(error);
+      alert("Error loading users");
+    } finally {
+      setMoreUsersLoading(false);
+    }
+  }
 
   function handleChannelSelected(channel: Channel) {
     setActiveChannel(channel);
@@ -75,6 +113,15 @@ export default function UsersMenu({
             key={user.id}
           />
         ))}
+        {endOfPaginationReached === false && (
+          <LoadingButton
+            onClick={loadMoreUsers}
+            loading={moreUsersLoading}
+            className="m-auto mb-3 w-[80%]"
+          >
+            Load more users
+          </LoadingButton>
+        )}
       </div>
     </div>
   );
