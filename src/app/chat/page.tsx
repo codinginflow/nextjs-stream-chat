@@ -1,6 +1,7 @@
 "use client";
 
 import useWindowSize from "@/hooks/useWindowSize";
+import { registerServiceWorker } from "@/utils/serviceWorker";
 import { mdBreakpoint } from "@/utils/tailwind";
 import { useUser } from "@clerk/nextjs";
 import { Menu, X } from "lucide-react";
@@ -29,6 +30,17 @@ export default function ChatPage() {
 
   const handleSidebarOnClose = useCallback(() => {
     setChatSidebarOpen(false);
+  }, []);
+
+  useEffect(() => {
+    async function setUpServiceWorker() {
+      try {
+        await registerServiceWorker();
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    setUpServiceWorker();
   }, []);
 
   if (!chatClient || !user) {
