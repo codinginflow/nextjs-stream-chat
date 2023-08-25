@@ -42,11 +42,25 @@ export async function unregisterPushNotifications() {
 export async function sendPushSubscriptionToServer(
   subscription: PushSubscription
 ) {
-  console.log("Sending push subscription to server", subscription);
+  const response = await fetch("/api/register-push", {
+    method: "POST",
+    body: JSON.stringify(subscription),
+  });
+
+  if (!response.ok) {
+    throw Error("Failed to send push subscription to server");
+  }
 }
 
 export async function deletePushSubscriptionFromServer(
   subscription: PushSubscription
 ) {
-  console.log("Deleting push subscription from server", subscription);
+  const response = await fetch("/api/register-push", {
+    method: "DELETE",
+    body: JSON.stringify(subscription),
+  });
+
+  if (!response.ok) {
+    throw Error("Failed to delete push subscription from server");
+  }
 }

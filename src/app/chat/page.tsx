@@ -1,6 +1,10 @@
 "use client";
 
 import useWindowSize from "@/hooks/useWindowSize";
+import {
+  getCurrentPushSubscription,
+  sendPushSubscriptionToServer,
+} from "@/notifications/pushService";
 import { registerServiceWorker } from "@/utils/serviceWorker";
 import { mdBreakpoint } from "@/utils/tailwind";
 import { useUser } from "@clerk/nextjs";
@@ -28,10 +32,6 @@ export default function ChatPage() {
     if (windowSize.width >= mdBreakpoint) setChatSidebarOpen(false);
   }, [windowSize.width]);
 
-  const handleSidebarOnClose = useCallback(() => {
-    setChatSidebarOpen(false);
-  }, []);
-
   useEffect(() => {
     async function setUpServiceWorker() {
       try {
@@ -41,6 +41,24 @@ export default function ChatPage() {
       }
     }
     setUpServiceWorker();
+  }, []);
+
+  useEffect(() => {
+    async function syncPushSubscription() {
+      try {
+        const subscription = await getCurrentPushSubscription();
+        if (subscription) {
+          await sendPushSubscriptionToServer(subscription);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    syncPushSubscription();
+  }, []);
+
+  const handleSidebarOnClose = useCallback(() => {
+    setChatSidebarOpen(false);
   }, []);
 
   if (!chatClient || !user) {
