@@ -6,7 +6,7 @@ export default function PushMessageListener() {
 
   useEffect(() => {
     const messageListener = async (event: MessageEvent) => {
-      console.log("Received message from server worker", event.data);
+      console.log("Received message from service worker", event.data);
 
       const channelId = event.data.channelId;
 
@@ -26,7 +26,7 @@ export default function PushMessageListener() {
 
     return () =>
       navigator.serviceWorker.removeEventListener("message", messageListener);
-  });
+  }, [client, setActiveChannel]);
 
   return null;
 }
