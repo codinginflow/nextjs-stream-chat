@@ -2,7 +2,7 @@ import { PushSubscription } from "web-push";
 
 declare global {
   interface UserPrivateMetadata {
-    subscriptions: PushSubscription[] | undefined;
+    subscriptions: (PushSubscription & { sessionId: string })[] | undefined;
   }
 
   interface UserUnsafeMetadata {
