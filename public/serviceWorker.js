@@ -40,3 +40,26 @@ sw.addEventListener("push", (event) => {
 
   event.waitUntil(handlePushEvent());
 });
+
+sw.addEventListener("notificationclick", (event) => {
+  const notification = event.notification;
+  notification.close();
+
+  async function handleNotificationClick() {
+    const windowClients = await sw.clients.matchAll({
+      type: "window",
+      includeUncontrolled: true,
+    });
+
+    const channelId = notification.data.channelId;
+
+    if (windowClients.length > 0) {
+      await windowClients[0].focus();
+      windowClients[0].postMessage({ channelId });
+    } else {
+      sw.clients.openWindow("/chat?channelId=" + channelId);
+    }
+  }
+
+  event.waitUntil(handleNotificationClick());
+});
