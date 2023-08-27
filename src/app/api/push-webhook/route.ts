@@ -36,9 +36,11 @@ export async function POST(req: Request) {
       .filter((id) => id !== sender.id);
     const channelId = event.channel.id;
 
-    const recipients = await clerkClient.users.getUserList({
-      userId: recipientIds,
-    });
+    const recipients = (
+      await clerkClient.users.getUserList({
+        userId: recipientIds,
+      })
+    ).filter((user) => !user.unsafeMetadata.mutedChannels?.includes(channelId));
 
     const pushPromises = recipients
       .map((recipient) => {
