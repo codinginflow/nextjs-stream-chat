@@ -1,34 +1,13 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Next.js 13 WhatsApp Web Clone with Web Push Notifications
 
-## Getting Started
+This project uses [Stream's chat SDK](https://getstream.io/try-for-free/?utm_source=codinginflow&utm_medium=sponsorship&utm_content=&utm_campaign=Codinginflow_2023Aug_CTA_klmh22) to provide a fully functional live chat with attachments, reactions, threads, and more. It also uses the **web push** API to send push notifications about new chat messages even if the browser window is closed.
 
-First, run the development server:
+Other technologies used:
+- Next.js 13 app router
+- Clerk for authentication
+- TailwindCSS
+- TypeScript
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+Watch the **tutorial on YouTube** to learn how to build this from scratch: https://www.youtube.com/watch?v=9afMU7GOcAg
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+![thumbnail](https://github.com/codinginflow/nextjs-stream-chat/assets/52977034/38d13d1f-bc83-411d-ba0f-070c1866da11)
